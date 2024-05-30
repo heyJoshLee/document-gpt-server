@@ -9,9 +9,9 @@ export const getDocuments = async (req, res) => {
   try {
     // Get the user ID from the request
     //const userId = req.user.id;
-    const userId = 1;
+    // const userId = 1;
     // Get all documents from the database
-    const documents = await Document.find({ userId });
+    const documents = await Document.find();
     return res.status(201).json(documents);
 
   } catch (error) {
@@ -23,10 +23,15 @@ export const getDocuments = async (req, res) => {
 // READ DOCUMENT
 export const getDocument = async (req, res) => {
 
+  console.log('req.params.id', req.params.id)
+
+
+
+
   try {
     // Get the user ID from the request
     //const userId = req.user.id;
-    const userId = 1;
+    //const userId = 1;
     // Get the document from the database
     const document = await Document.findById(req.params.id);
     if (!document) {
@@ -34,15 +39,15 @@ export const getDocument = async (req, res) => {
     }
 
     // Check if the user is an admin or the owner of the document
-    if (!document.userId.equals(userId) && !user.isAdmin) {
-      return res.status(403).json({ error: 'Unauthorized' });
-    }
+    // if (!document.userId.equals(userId) && !user.isAdmin) {
+    //return res.status(403).json({ error: 'Unauthorized' });
+    //}
 
     // Return the document
     return res.json(document);
   } catch (error) {
     // Handle any errors
-    return res.status(500).json({ error: 'Server error' });
+    return res.status(500).json({ error: error.message });
   }
 };
 
@@ -81,31 +86,40 @@ export const createDocument = async (req, res) => {
 // DELETE DOCUMENT
 export const updateDocument = async (req, res) => {
   const documentId = req.params.id;
+
+  const { name, content, status, templateId, userId } = req.body;
+
+  console.log('req.body', req.body)
   try {
     // Get the user ID from the request
     // const userId = req.user.id;
 
     // Check if the user is an admin or the owner of the document
-    const document = await Document.findById(req.params.id);
+    let document = await Document.findOneAndUpdate({ _id: req.params.id }, {
+      name: name,
+      content: content,
+      status: status,
+    }, { new: true }
+    );
+
     if (!document) {
       return res.status(404).json({ error: 'Document not found' });
     }
-    if (!document.userId.equals(userId) && !user.isAdmin) {
-      return res.status(403).json({ error: 'Unauthorized' });
-    }
+    // if (!document.userId.equals(userId) && !user.isAdmin) {
+    //   return res.status(403).json({ error: 'Unauthorized' });
+    // }
 
-    // Update the document with the new data
-    document.title = req.body.title;
-    document.content = req.body.content;
+    // // Update the document with the new data
+    // document = { ...document, ...req.body }
 
-    // Save the updated document to the database
-    await document.save();
+    // // Save the updated document to the database
+    // await document.updateOne();
 
     // Return the updated document
     return res.json(document);
   } catch (error) {
     // Handle any errors
-    return res.status(500).json({ error: 'Server error' });
+    return res.status(500).json({ error: error.message });
   }
 };
 
@@ -113,25 +127,26 @@ export const updateDocument = async (req, res) => {
 export const deleteDocument = async (req, res) => {
   try {
     // Get the user ID from the request
-    const userId = req.user.id;
+    //const userId = req.user.id;
 
     // Check if the user is an admin or the owner of the document
     const document = await Document.findById(req.params.id);
+    console.log('document', document)
     if (!document) {
       return res.status(404).json({ error: 'Document not found' });
     }
-    if (!document.userId.equals(userId) && !user.isAdmin) {
-      return res.status(403).json({ error: 'Unauthorized' });
-    }
+    // if (!document.userId.equals(userId) && !user.isAdmin) {
+    //   return res.status(403).json({ error: 'Unauthorized' });
+    // }
 
     // Delete the document from the database
-    await document.remove();
+    await document.deleteOne();
 
     // Return a success message
     return res.json({ message: 'Document deleted' });
   } catch (error) {
     // Handle any errors
-    return res.status(500).json({ error: 'Server error' });
+    return res.status(500).json({ error: error.message });
   }
 };
 

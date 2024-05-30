@@ -7,7 +7,7 @@ const router = Router({ mergeParams: true });
 router.get('/', getDocuments);
 router.get('/:id', getDocument);
 router.post('/', createDocument);
-router.put('/:id', updateDocument);
+router.patch('/:id', updateDocument);
 router.delete('/:id', deleteDocument);
 
 
