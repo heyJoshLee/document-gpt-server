@@ -1,7 +1,7 @@
-const QuestionSet = require('../models/QuestionSet');
-
+import QuestionSet from '../models/QuestionSet.js';
+import Question from '../models/Question.js';
 // Get all question sets
-const getAllQuestionSets = async (req, res) => {
+export const getAllQuestionSets = async (req, res) => {
   try {
     const questionSets = await QuestionSet.find();
     res.json(questionSets);
@@ -11,7 +11,7 @@ const getAllQuestionSets = async (req, res) => {
 };
 
 // Get a single question set by ID
-const getQuestionSetById = async (req, res) => {
+export const getQuestionSetById = async (req, res) => {
   try {
     const questionSet = await QuestionSet.findById(req.params.id);
     if (!questionSet) {
@@ -24,7 +24,7 @@ const getQuestionSetById = async (req, res) => {
 };
 
 // Create a new question set
-const createQuestionSet = async (req, res) => {
+export const createQuestionSet = async (req, res) => {
   try {
     const questionSet = new QuestionSet(req.body);
     await questionSet.save();
@@ -35,7 +35,7 @@ const createQuestionSet = async (req, res) => {
 };
 
 // Update an existing question set
-const updateQuestionSet = async (req, res) => {
+export const updateQuestionSet = async (req, res) => {
   try {
     const questionSet = await QuestionSet.findByIdAndUpdate(
       req.params.id,
@@ -52,7 +52,7 @@ const updateQuestionSet = async (req, res) => {
 };
 
 // Delete a question set
-const deleteQuestionSet = async (req, res) => {
+export const deleteQuestionSet = async (req, res) => {
   try {
     const questionSet = await QuestionSet.findByIdAndDelete(req.params.id);
     if (!questionSet) {
@@ -64,10 +64,18 @@ const deleteQuestionSet = async (req, res) => {
   }
 };
 
-module.exports = {
-  getAllQuestionSets,
-  getQuestionSetById,
-  createQuestionSet,
-  updateQuestionSet,
-  deleteQuestionSet,
-};
+
+export const getQuestionsForQuestionSet = async (req, res) => {
+  console.log("getting questions for question set", req.params.id)
+  try {
+    const questions = await Question.find({ questionSetId: req.params.id });
+    if (!questions) {
+      console.log("questions not found")
+      return res.status(404).json({ error: 'Questionsnot found' });
+    }
+    console.log("questions found: ", questions)
+    return res.json(questions);
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}

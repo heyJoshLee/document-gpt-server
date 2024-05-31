@@ -44,11 +44,11 @@ const userSchema = new Schema({
   },
   organizationId: {
     type: String,
-    required: true
+    required: false
   },
   planId: {
     type: String,
-    required: true
+    required: false
   }
 });
 

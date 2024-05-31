@@ -1,6 +1,5 @@
 import express from 'express';
 import { getAllQuestions, getQuestionById, createQuestion, deleteQuestion, updateQuestion } from '../controllers/questionsController.js';
-import Question from '../models/Question.js';
 
 const router = express.Router();
 

@@ -1,44 +1,14 @@
-import User from '../models/user.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-
+import UserService from '../services/userService.js';
+import AuthService from '../services/authService.js';
 export const createUser = async (req, res) => {
-
   console.log('req.body', req.body)
-  let userParams = req.body;
-
-  userParams.email = userParams?.email.toLowerCase();
-  // SEE IF USER ALREADY EXSISTS
   try {
-    const exsistingUser = await User.findOne({ email: userParams.email });
-    if (exsistingUser) {
-      return res.status(500).json({
-        message: "User already exsits."
-      });
-    }
-
-    // HASH PASSWORD
-    const newUser = new User(userParams);
-    const salt = await bcrypt.genSalt(10);
-    // @ts-ignore
-    newUser.password = await bcrypt.hash(userParams.password, salt);
-    await newUser.save();
-
-    // SIGN IN USER WITH JWT
-    const payload = {
-      user: {
-        id: newUser.id
-      }
-    }
-
-    jwt.sign(payload, process.env.JWT_SECRET, (error, token) => {
-      if (error) throw error;
-      return res.status(200).json({
-        token: token,
-        user: newUser,
-        loggedIn: true
-      });
-    })
+    const UserServiceInstance = UserService();
+    const newUser = await UserServiceInstance.createUser(req.body);
+    const AuthServiceInstance = AuthService();
+    const logInToken = AuthServiceInstance.createLogInToken(newUser._id);
+    console.log('logInToken', logInToken)
+    return res.status(200).json(logInToken);
   } catch (error) {
     console.log(error.message);
     return res.status(404).json({
@@ -46,6 +16,7 @@ export const createUser = async (req, res) => {
     })
   }
 }
+
 
 export const getUsers = async (req, res) => {
   try {
@@ -78,4 +49,11 @@ export const updateUser = async (req, res) => {
   } catch (error) {
     console.log(error)
   }
+}
+
+export const deleteUser = async (req, res) => {
+  return res.status(400).json({
+    message: "Not implemented"
+  })
+
 }

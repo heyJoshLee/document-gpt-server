@@ -6,7 +6,9 @@ import mongoose from 'mongoose';
 
 // Import routes
 import documentRoutes from './routes/documents.js';
-
+import userRoutes from './routes/users.js';
+import questionSetRoutes from './routes/questionSets.js';
+import questionRoutes from './routes/questions.js';
 // Initialize express with options
 dotenv.config();
 const app = express();
@@ -16,6 +18,9 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 
 // Set up routes
 app.use('/documents', documentRoutes);
+app.use('/users', userRoutes);
+app.use('/questionSets', questionSetRoutes);
+app.use('/questions', questionRoutes);
 
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 5000;
@@ -23,4 +28,6 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}.`)
   }))
-  .catch((error) => console.log(error.message)); 
+  .catch((error) => console.log(error.message));
+
+export default app;
