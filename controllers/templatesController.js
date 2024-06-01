@@ -1,17 +1,21 @@
 import Template from '../models/Template.js';
 // Create a new template
 export const createTemplate = async (req, res) => {
+  console.log('creating template with the params:', req.body)
   try {
     const template = new Template(req.body);
     await template.save();
+    console.log('template created:', template)
     res.status(201).json(template);
   } catch (error) {
+    console.log('error:', error)
     res.status(500).json({ error: 'Failed to create template' });
   }
 };
 
 // Get all templates
 export const getAllTemplates = async (req, res) => {
+  console.log('getting all templates')
   try {
     const templates = await Template.find();
     res.json(templates);

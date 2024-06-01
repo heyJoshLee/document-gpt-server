@@ -1,5 +1,4 @@
-import Plan from '../models/Plan.js';
-// Get all plans
+import Plan from '../models/plan.js';
 export const getAllPlans = async (req, res) => {
   try {
     const plans = await Plan.find();

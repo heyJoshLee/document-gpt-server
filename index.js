@@ -9,6 +9,8 @@ import documentRoutes from './routes/documents.js';
 import userRoutes from './routes/users.js';
 import questionSetRoutes from './routes/questionSets.js';
 import questionRoutes from './routes/questions.js';
+import templateRoutes from './routes/templates.js';
+import templateSetRoutes from './routes/templateSets.js';
 // Initialize express with options
 dotenv.config();
 const app = express();
@@ -21,6 +23,8 @@ app.use('/documents', documentRoutes);
 app.use('/users', userRoutes);
 app.use('/questionSets', questionSetRoutes);
 app.use('/questions', questionRoutes);
+app.use('/templatesets', templateSetRoutes);
+app.use('/templates', templateRoutes);
 
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 5000;

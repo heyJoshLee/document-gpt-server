@@ -1,8 +1,6 @@
 import express from 'express';
 import { getAllPlans, getPlanById, createPlan, deletePlan, updatePlan } from '../controllers/plansController.js';
 
-const plansController = require('../controllers/plansController');
-
 const router = express.Router();
 
 // Define routes for Plans
