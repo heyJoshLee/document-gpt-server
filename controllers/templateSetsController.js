@@ -42,16 +42,8 @@ export const updateTemplateSetById = async (req, res) => {
   console.log('params:', req.params)
   const { id } = req.params;
 
-  console.log("id", id)
-  const arrayOfValues = req.body;
-  let templateSetParams = {};
-  arrayOfValues.forEach((value) => {
-    templateSetParams[value.name] = value.value;
-  });
-  console.log("templateSetParams", templateSetParams)
-
   try {
-    const templateSet = await TemplateSet.findByIdAndUpdate(req.params.id, templateSetParams, {
+    const templateSet = await TemplateSet.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
     if (!templateSet) {

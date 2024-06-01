@@ -57,14 +57,9 @@ export const updateQuestion = async (req, res) => {
   const { id } = req.params;
   console.log("id", id)
   const arrayOfValues = req.body;
-  let questionParams = {};
-  arrayOfValues.forEach((value) => {
-    questionParams[value.name] = value.value;
-  });
-  console.log("questionParams", questionParams)
 
   try {
-    const question = await Question.findByIdAndUpdate(id, questionParams, {
+    const question = await Question.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     if (!question) {
