@@ -1,39 +1,34 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const documentSchema = new mongoose.Schema({
-  name: {
+const { Schema } = mongoose;
+
+const mongoSchema = new Schema({
+  title: {
     type: String,
-    required: true
+    required: true,
   },
-  content: {
+  body: {
     type: String,
-    required: true
-  },
-  dateCreated: {
-    type: Date,
-    default: Date.now
-  },
-  dateUpdated: {
-    type: Date,
-    default: Date.now
-  },
-  status: {
-    type: String,
-    enum: ['review', 'published'],
-    default: 'review'
   },
   templateId: {
     type: String,
-    ref: 'Template',
-    required: true
   },
-  userId: {
-    type: String,
-    ref: 'User',
-    required: true
-  }
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  editedAt: {
+    type: Date,
+    default: Date.now
+  },
 });
 
-const Document = mongoose.model('Document', documentSchema);
+// Automatically update the `editedAt` field on save
+mongoSchema.pre('save', function (next) {
+  this.editedAt = Date.now();
+  next();
+});
+
+const Document = mongoose.model('Document', mongoSchema);
 
 export default Document;

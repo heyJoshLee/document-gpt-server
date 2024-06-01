@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 
 // Import routes
-import documentRoutes from './routes/documents.js';
+import documentRoutes from "./routes/documents.js";
 import userRoutes from './routes/users.js';
 import questionSetRoutes from './routes/questionSets.js';
 import questionRoutes from './routes/questions.js';
