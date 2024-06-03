@@ -1,4 +1,7 @@
 import Document from '../models/document.js';
+import { chatGptRequestWithHtml } from '../services/chatGptService.js';
+
+
 // Get all
 export const getAllDocuments = async (req, res) => {
   try {
@@ -38,6 +41,8 @@ export const createDocument = async (req, res) => {
 
 // Update one
 export const updateDocumentById = async (req, res) => {
+  console.log('updating document with body', req.body)
+  console.log('updating document with id', req.params.id)
   try {
     const document = await Document.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -45,21 +50,44 @@ export const updateDocumentById = async (req, res) => {
     if (!document) {
       return res.status(404).json({ error: 'Document not found' });
     }
+    console.log('updated document', document)
     res.json(document);
   } catch (error) {
+    console.log('error updating document', error)
     res.status(500).json({ error: 'Server error' });
   }
 };
 
 // Delete one
 export const deleteDocumentById = async (req, res) => {
+  console.log('deleting document with id', req.params.id)
   try {
     const document = await Document.findByIdAndDelete(req.params.id);
     if (!document) {
       return res.status(404).json({ error: 'Document not found' });
     }
+    console.log('deleted document', document)
     res.json({ message: 'Document deleted successfully' });
   } catch (error) {
+    console.log('error deleting document', error)
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
+export const generateWithChatGpt = async (req, res) => {
+  const documentId = req.params.id;
+  const { prompt } = req.body;
+  console.log('generating document with prompt', prompt)
+  try {
+    let document = await Document.findById(documentId);
+    const returnedPrompt = await chatGptRequestWithHtml(prompt);
+    document.body = returnedPrompt;
+    document = await document.save();
+    console.log('document generatd successfully', document)
+    return res.status(200).json(document);
+  } catch (error) {
+    console.log('error generating document', error)
+    res.status(500).json({ error: 'Server error' });
+  }
+}
