@@ -17,6 +17,12 @@ const mongoSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  userId: {
+    type: String,
+  },
+  userEmail: {
+    type: String,
+  },
   status: {
     type: String,
     default: 'draft',

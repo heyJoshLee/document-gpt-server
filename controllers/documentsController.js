@@ -1,6 +1,6 @@
 import Document from '../models/document.js';
 import { chatGptRequestWithHtml } from '../services/chatGptService.js';
-
+import { sendAdminEmailToReviewDocuments } from '../services/mailer.js';
 
 // Get all
 export const getAllDocuments = async (req, res) => {
@@ -74,7 +74,6 @@ export const deleteDocumentById = async (req, res) => {
   }
 };
 
-
 export const generateWithChatGpt = async (req, res) => {
   const documentId = req.params.id;
   const { prompt } = req.body;
@@ -90,4 +89,18 @@ export const generateWithChatGpt = async (req, res) => {
     console.log('error generating document', error)
     res.status(500).json({ error: 'Server error' });
   }
+}
+
+export const testControllerFunction = async (req, res) => {
+  if (process.env.NODE_ENV !== 'development') {
+    console.log('Unauthorized. This is only available in development mode.');
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const documents = await Document.find();
+  const document = documents[0];
+  console.log('testControllerFunction document', document);
+  sendAdminEmailToReviewDocuments(documents);
+  console.log('testControllerFunction email sent');
+  return res.json({ message: 'testControllerFunction' });
 }
