@@ -1,4 +1,5 @@
 import Plan from '../models/plan.js';
+// Get all
 export const getAllPlans = async (req, res) => {
   try {
     const plans = await Plan.find();
@@ -8,7 +9,7 @@ export const getAllPlans = async (req, res) => {
   }
 };
 
-// Get a single plan by ID
+// Get single object
 export const getPlanById = async (req, res) => {
   try {
     const plan = await Plan.findById(req.params.id);
@@ -21,7 +22,7 @@ export const getPlanById = async (req, res) => {
   }
 };
 
-// Create a new plan
+// Create one new
 export const createPlan = async (req, res) => {
   try {
     const plan = new Plan(req.body);
@@ -32,8 +33,8 @@ export const createPlan = async (req, res) => {
   }
 };
 
-// Update a plan by ID
-export const updatePlan = async (req, res) => {
+// Update one
+export const updatePlanById = async (req, res) => {
   try {
     const plan = await Plan.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -47,8 +48,8 @@ export const updatePlan = async (req, res) => {
   }
 };
 
-// Delete a plan by ID
-export const deletePlan = async (req, res) => {
+// Delete one
+export const deletePlanById = async (req, res) => {
   try {
     const plan = await Plan.findByIdAndDelete(req.params.id);
     if (!plan) {
@@ -59,4 +60,3 @@ export const deletePlan = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
-

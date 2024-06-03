@@ -39,8 +39,9 @@ const userSchema = new Schema({
     default: Date.now
   },
   active: {
-    type: Boolean,
-    default: true
+    type: String,
+    enum: ['active', 'inactive'],
+    default: 'active'
   },
   organizationId: {
     type: String,
@@ -57,6 +58,14 @@ userSchema.pre('save', function (next) {
   this.editedAt = Date.now();
   next();
 });
+
+userSchema.methods.isActive = function () {
+  return this.active === 'active';
+}
+
+userSchema.methods.isAdmin = function () {
+  return this.role === 'admin';
+}
 
 const User = mongoose.model('User', userSchema);
 
