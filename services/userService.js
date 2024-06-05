@@ -22,11 +22,28 @@ const UserService = () => {
     const salt = await bcrypt.genSalt(10);
     newUser.password = await bcrypt.hash(userParams.password, salt);
     return await newUser.save();
+  }
 
+  const createUserWithoutPassword = async (userParams) => {
+    const email = userParams?.email.toLowerCase();
+    let newUserParams = {
+      ...userParams,
+      password: null,
+      email
+    }
+    // Check to see if user already exsists
+    const exsistingUser = await User.findOne({ email: newUserParams.email });
+    if (exsistingUser) {
+      return {
+        message: "User already exsits."
+      };
+    }
+    return await newUser.save();
   }
 
   return {
-    createUser
+    createUser,
+    createUserWithoutPassword,
   }
 
 }

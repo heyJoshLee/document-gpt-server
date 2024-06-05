@@ -27,6 +27,9 @@ const mongoSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  questionSetId: {
+    type: String,
+  },
 });
 
 // Automatically update the `editedAt` field on save

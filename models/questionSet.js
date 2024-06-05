@@ -9,6 +9,9 @@ const questionSetSchema = new mongoose.Schema({
     },
     required: true
   },
+  templateSetId: {
+    type: String,
+  },
   description: {
     type: String,
     length: {

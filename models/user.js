@@ -19,7 +19,6 @@ const userSchema = new Schema({
       min: 1,
       max: 100
     },
-    required: true
   },
   role: {
     type: String,
@@ -27,7 +26,7 @@ const userSchema = new Schema({
     default: 'user'
   },
   verifiedEmail: {
-    type: Boolean,
+    type: String,
     default: false
   },
   createdAt: {
@@ -65,6 +64,10 @@ userSchema.methods.isActive = function () {
 
 userSchema.methods.isAdmin = function () {
   return this.role === 'admin';
+}
+
+userSchema.methods.isVerified = function () {
+  return this.verifiedEmail;
 }
 
 const User = mongoose.model('User', userSchema);

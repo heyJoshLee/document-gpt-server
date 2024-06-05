@@ -40,13 +40,14 @@ export function sendEmail(to, subject, html) {
   });
 }
 
-// Takes an array of documents and sends an email to the admin with links to review the documents
-export function sendAdminEmailToReviewDocuments(documentArray) {
+// Takes a submission and an array of documents and sends an email to the admin with links to review the documents
+export function sendAdminEmailToReviewDocuments(submission, documentArray) {
   try {
     let emailBody = `
     <h1>New Documents to Review</h1>
     <p>${documentArray[0]?.userEmail} has generated the following documents</p>
     <p>There are ${documentArray.length} new documents to review.</p>
+    <p>View all the documents <a href='${DOMAIN_NAME}/admin/submissions/${submission._id}' >here.</a></p>
     `
     documentArray.forEach(document => {
       emailBody += generateReviewDocumentLinkHtml(document);

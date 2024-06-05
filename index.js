@@ -13,6 +13,7 @@ import templateRoutes from './routes/templates.js';
 import templateSetRoutes from './routes/templateSets.js';
 import planRoutes from './routes/plans.js';
 import adminRoutes from './routes/admin.js';
+import submissionRoutes from './routes/submissions.js';
 
 // Initialize express with options
 dotenv.config();
@@ -30,6 +31,7 @@ app.use('/templatesets', templateSetRoutes);
 app.use('/templates', templateRoutes);
 app.use('/plans', planRoutes);
 app.use('/admin', adminRoutes);
+app.use('/submissions', submissionRoutes);
 
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 5000;

@@ -23,6 +23,9 @@ const mongoSchema = new Schema({
   userEmail: {
     type: String,
   },
+  submissionId: {
+    type: String,
+  },
   status: {
     type: String,
     default: 'draft',

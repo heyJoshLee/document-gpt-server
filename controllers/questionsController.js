@@ -1,4 +1,4 @@
-import Question from '../models/Question.js';
+import Question from '../models/question.js';
 // Get all questions
 export const getAllQuestions = async (req, res) => {
   console.log("getting all questions for the following request", req.body)
@@ -40,6 +40,7 @@ export const getQuestionById = async (req, res) => {
 // Create a new question
 export const createQuestion = async (req, res) => {
   console.log("creating question with the following info", req.body)
+  console.log('params', req.params)
   try {
     const question = new Question(req.body);
     await question.save();

@@ -104,3 +104,18 @@ export const testControllerFunction = async (req, res) => {
   console.log('testControllerFunction email sent');
   return res.json({ message: 'testControllerFunction' });
 }
+
+export const userCreateDocument = async (req, res) => {
+  console.log('user create document')
+  console.log('creating document with body', req.body)
+  return
+  try {
+    const document = new Document(req.body);
+    await document.save();
+    console.log('created document', document)
+    res.status(201).json(document);
+  } catch (error) {
+    console.log('error creating document', error)
+    res.status(500).json({ error: 'Server error' });
+  }
+}
